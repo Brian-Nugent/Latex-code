@@ -1,0 +1,595 @@
+\documentclass[a4paper]{article}
+
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{yfonts}
+\usepackage{frcursive}
+\usepackage{aurical}
+%\usepackage{LobsterTwo}
+\usepackage{egothic}
+\usepackage{miama}
+\setlength\parindent{0pt}
+\setlength\parskip{5pt}
+
+
+%% Sets page size and margins
+\usepackage[a4paper,top=3cm,bottom=2cm,left=2.5cm,right=2.5cm,marginparwidth=2cm]{geometry}
+
+%% Useful packages
+\usepackage{amsmath, latexsym, graphicx, amsthm, amssymb, scrextend, setspace,wasysym, marvosym, tikz}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{tikz-cd}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Oc}{\mathcal{O}}
+\newcommand{\al}{\alpha}
+\newcommand{\ao}{\alpha_0}
+\newcommand{\an}{\alpha_n}
+\newcommand{\zi}{\Z[i]}
+\newcommand{\be}{\begin{equation}} 
+\newcommand{\ee}{\end{equation}}   
+\newcommand{\beq}{\begin{eqnarray*}} 
+\newcommand{\eeq}{\end{eqnarray*}} 
+\newcommand{\jump}{\vspace{0.3cm}}
+\let\newproof\proof
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{prop}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{counterexample}[theorem]{Counterexample}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\numberwithin{theorem}{section}
+
+\title{Varieties of General Type and the Minimal Model Program}
+\author{Brian Nugent}
+\date\today
+
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+
+
+This paper is meant to give an introduction to the study of varieties of general type. The main tool in their study is the minimal model program. This has been around since the 1980's where S. Mori, Y. Kawamata, J. Kollár, M. Reid and V. Shokurov proved most of what is needed to run it. There have historically been a few main problems keeping the minimal model program from working. Recently, in \cite{MR2359343} and \cite{MR2601039}, it has been proven that the minimal model program works for varieties of general type. In this paper, we will go over the background required to understand the minimal model program as well as the open problems related to it.
+
+In Section \ref{curves}, we discuss the classification of curves and try to emphasis the steps that we would like to emulate for higher dimensional varieties. In Section \ref{kodaira}, we give the definition of varieties of general type and give a list of examples. In Section \ref{pos}, we take a slight detour and discuss various notions of positivity for line bundles that end up being very important in our study. In Section \ref{mmp}, we discuss the Minimal Model Program.
+
+\section{Notation and Terminology}
+Throughout this paper a \textbf{variety} will mean an integral projective scheme over $\mathbb{C}$. A \textbf{divisor} means a Cartier divisor (sometimes $\mathbb{Q}$-Cartier when it makes sense) and we denote the associated invertible sheaf (reflexive rank 1 sheaf in the $\mathbb{Q}$-Cartier case) of a divisor $D$ on $X$ by $\Oc_X(D)$. Given a divisor $D$, we write $\phi_D$ to denote the rational map determined by picking a basis for $H^0(X,\Oc_X(D))$. Given a normal variety $X$, we denote a canonical divisor on $X$ by $K_X$.
+
+
+\section{Classification of Curves}\label{curves}
+
+In this section, we give a brief account of the classification of curves, which is what we will try to replicate for higher dimensional varieties. First we recall that every curve is birational to a unique nonsingular curve. One way to obtain this is simply by taking the normalization. This reduces the problem of classifying curves to problem of classifying smooth curves.
+
+Now recall some useful theorems about smooth curves. For proofs, see \cite{Hartshorne77}[IV 1].
+
+\begin{theorem}[Riemann Roch Theorem]
+Let $D$ be a divisor on a smooth curve $X$ of genus $g$. Then
+
+$$ \chi(\Oc_X(D)) = |D| - |K_X-D| = \text{deg} D + 1 - g $$
+
+\end{theorem}
+
+\begin{proposition}\label{amplecurve}
+Let $D$ be a divisor on a curve $X$. Then, $D$ is very ample if and only if for every two points $P,Q \in X$,
+
+$$ |D-P-Q| = |D| - 2 $$
+
+\end{proposition}
+
+
+These two together give us the following corollary,
+
+\begin{corollary}
+Let $X$ be a smooth curve of genus $g \geq 2$. Then $3K_X$ is very ample.
+\end{corollary}
+
+\begin{proof}
+First, we can apply Riemann Roch with $D = K_X$ to obtain deg $K_X = 2g-2$. Since $g \geq 2$, deg $K_X \geq 2$. So we see that 
+
+$$ \text{deg} (K_X - (3K_X-P-Q)) < 0 $$for all $P,Q \in X$. Thus, applying Riemann Roch again, we obtain,
+
+$$ |3K_X-P-Q| = 5g-8 = |3K_X| - 2 $$
+
+\end{proof}
+
+As we saw in the previous proof,
+
+$$ |3K_X| = 5g - 5 $$
+
+So all curves of genus $g$ admit a natural embedding into $\mathbb{P}^{5g-6}$, thus we can use an appropriate Hilbert scheme to find a flat family that contains all curves of genus $g$ as members. In particular, we see that the Hilbert polynomial of our curve $X \subset \mathbb{P}^{5g-6}$ is 
+
+$$ h(n) =  \chi(\Oc_X(3nK_X)) = (6g-6)n + 1 - g$$
+
+once again by Riemann Roch. Thus every smooth curve of genus $g$ appears as a member of the family,
+
+$$ \text{Univ}_h(\mathbb{P}^{5g-6}) \rightarrow \text{Hilb}_h(\mathbb{P}^{5g-6}) $$As a high level overview of what we would like to do in general, suppose we have some class $\mathcal{V}$ of varieties that we would like to classify. We have found that if we can fix some discrete invariants (in this case the genus) and find a natural very ample line bundle (3$K_X$) on every member of $\mathcal{V}$, then we can find a family ($\text{Univ}_h$) that contains all of the members of $\mathcal{V}$ with the fixed invariants.
+
+\section{Hironaka's Theorem}
+
+We begin with the famous theorem of Hironaka on the resolution of singularities.
+
+\begin{theorem}[\cite{Hironaka64}]
+
+Let $X$ be a projective variety over a field of characteristic 0. There exists a proper birational morphism $\tilde{X} \rightarrow X$ such that $X$ is nonsingular.
+\end{theorem}
+
+Unlike, the case of curves, however, $\tilde{X}$ is not unique (blow up a point for example). Thus we must try and find the "best" representative for the birational equivalence class of $X$. But at least Hironaka's Theorem tells us that there is no harm is starting our search assuming that $X$ is nonsingular.
+
+
+\section{Kodaira Dimension} \label{kodaira}
+Let $X$ be a smooth variety. The kodaira dimension of $X$ is a number that tells us what kind of information the canonical bundle can give us about our variety.
+
+Let $\phi_{mK_X}: X \dashrightarrow \mathbb{P}^N$ be the rational map determined by the line bundle $mK_X$. We define the \textbf{kodaira dimension of $X$} as
+
+$$ \mathcal{K}(X) = \text{max}\{\text{dim } \overline{\text{Im}(\phi_{mK_X})} \text{ for } m \geq 1\} $$
+
+If $\phi_{mK}$ is always the empty map (that is, $\Oc_X(mK_X)$ has no global sections for any $m$), then we say $\mathcal{K}(X) < 0$.
+
+If $\mathcal{K}(X) = dim(X)$ then we say that $X$ is a variety of \textbf{general type}. This name will make more sense after we look at a few examples.
+
+In Section 4 we will show that if $X$ is a variety of general type, then $\phi_{mK_X}$ will actually be birational for all $m >> 0$.
+
+\subsection{Examples}
+
+First let us look at hypersurfaces in $\mathbb{P}^n$ as an example. Let $H$ be a hypersurface of degree $d$ in $\mathbb{P}^n$. Then
+
+$$ \mathcal{O}(K_H) = \mathcal{O}_H(d-n-1) $$
+
+by the adjunction formula. Thus we have three cases: 
+
+\begin{itemize}
+\item If $d < n+1$, then $-K_H$ is ample, $mK_H$ will have no global sections for all $m \geq 1$ and $\mathcal{K}(H) < 0$.
+\item If $d = n+1$, then $K_H$ is trivial and so $\mathcal{K}(H) = 0$.
+\item If $d > n+1$, then $K_H$ is ample and so $\mathcal{K}(H) = n-1$, i.e. $X$ is of general type.
+\end{itemize}
+
+More generally, if $X$ is a complete intersection of hypersufaces of degrees $d_1,\dots,d_r$ in $\mathbb{P}^N$ then 
+
+$$ \omega_X = \Oc_X\left(\sum d_i -1-N\right) $$So we see that for almost any choice of $N$ and $d_i$, $X$ will be a variety of general type.
+
+\vspace{0.5cm}
+
+Now let us use the classification of curves to give another example.
+
+Let $C$ be a smooth curve of genus $g$ over a field $k$ and let $\omega_C$ be the canonical bundle on $C$. Using Riemann Roch, we can show that $\omega_C$ has degree $2g - 2$. Also using Riemann Roch, we can show that a divisor is ample if and only if its degree is positive. This creates three different cases.
+
+\begin{itemize}
+\item If $g = 0$, then $-K_C$ is ample and $\mathcal{K}(C) < 0$. In fact, $C \cong \mathbb{P}^1$.
+\item If $g = 1$, then $K_C$ is trivial and $\mathcal{K}(C) = 0$.
+\item If $g \geq 2$, then $K_C$ is ample and $\mathcal{K}(C) = 1$.
+\end{itemize}
+
+While it may be true that in some sense "most" varieties are of general type, many of the most interesting and most studied families of varieties are not. Here are a few examples:
+\begin{itemize}
+\item Smooth Fano varieties are smooth varieties where $-K_X$ is ample. They have Kodaira dimension $<0$.
+\item A K3 surface is a smooth surface with trivial canonical bundle and irregularity 0. They have Kodaira dimension 0.
+\item Generalizing the last example, a Calabi-Yau variety is a smooth variety with trivial canonical bundle where all cohomology of $\Oc_X$ vanishes except in the top and bottom degree. They have Kodaira dimension 0.
+\item An abelian variety is a projective group scheme. They have Kodaira dimension 0.
+\item The product of an elliptic curve and a curve of genus $\geq 2$ gives an example of a surface of Kodaira dimension 1.
+\end{itemize}
+
+
+\section{Positivity of Divisors}\label{pos}
+
+There are many different notions of positivity of divisors that will be necessary in our study of varieties of general type. We compile their important properties here. For more information, see the book \cite{MR2095471}. For this section a divisor will always mean a Cartier divisor.
+
+\subsection{Big Divisors}
+
+\begin{lemma} \label{upper}
+Let $X$ be a variety of dimension $n$ and $D$ a  Divisor on $X$. There exists a constant $C > 0$ such that 
+
+$$ h^0(X, \mathcal{O}_X(mD) \leq C m^n $$
+
+for $m >> 0$.
+
+\end{lemma}
+
+\begin{proof}
+Let $A$ be a very ample divisor such that $D-A$ is effective. Then
+
+$$ h^0(X,\mathcal{O}_X(mD) \leq h^0(X,\mathcal{O}_X(mA) $$
+
+The number on the right is given by the Hilbert polynomial of $X$ in the embedding determined by $A$, thus the claim follows.
+
+\end{proof}
+
+A divisor $D$ on $X$ is \textbf{big} if the dimension of $\phi_{mD}$ is equal to dim $X$ for some $m > 0$. Thus a smooth variety $X$ is of general type if and only if $K_X$ is big.
+
+\begin{proposition} \label{big}
+Let $X$ be a variety of dimension $n$ and $D$ a divisor on $X$.
+
+The following are equivalent:
+
+1) $D$ is big
+
+2) The image of $\phi_{mD}$ has dimension $n$ for some $m > 0$.
+
+3) There is a constant $C$ such that $h^0(X, \mathcal{O}(mD)) \geq C m^n$ for some $m$ sufficiently large and divisible.
+
+4) For any ample divisor $A$ on $X$, there is an $m > 0$ and an effective divisor $E$ such that $mD = A + E $
+
+5) There exists an $m > 0$ such that $\phi_{mD}$ is birational.
+
+\end{proposition}
+
+\begin{proof}
+$(1 \Rightarrow 2)$ This is the definition.
+
+$(2 \Rightarrow 3)$ We first prove it for normal $X$ then reduce the general case to the normal one. So assume $X$ is normal. Replace $D$ with some multiples so that the image of $\phi_D$ has dimension $n$. Let $Y$ be the image of $\phi_{D}$ and let $D' = \mathcal{O}_Y(1)$. $\phi_{D}$ determines a rational map from $X$ to $Y$ so let $U$ be the largest open subset of $X$ for which this map is defined. Then pulling back global sections gives an injective map,
+
+$$ 0 \rightarrow H^0(Y, \mathcal{O}_Y(mD')) \rightarrow H^0(U, \mathcal{O}_U(mD)) $$
+
+Since $X$ is R1 and $Y$ is proper, $X \setminus U$ has codimension 2. Also because $X$ is S2, $H^0(U, \mathcal{O}(mD)) = H^0(X, \mathcal{O}(mD))$.
+
+For large $m$, $h^0(Y, \mathcal{O}(mD'))$ is equal to the Hilbert polynomial of $Y$, proving the claim.
+
+We now prove the claim for any $X$. Let $v: X' \rightarrow X$ be the normalization of $X$ and set $D' = v^* D$. First note that we have an exact sequence,
+
+$$ 0 \rightarrow \mathcal{O}_X \rightarrow v_* \mathcal{O}_{X'} \rightarrow C \rightarrow 0 $$
+
+where $C$ is supported on a closed subset of dimension $\leq n - 1$.
+
+Also note that by the projection formula,
+
+$$ H^0(X', \mathcal{O}_{X'}(mD')) = H^0(X,v_* \mathcal{O}_{X'} \otimes \mathcal{O}_X(mD)) $$
+
+Combining these, we obtain,
+
+\begin{align*} 
+h^0(X', \mathcal{O}_{X'}(mD)) &= h^0(X,v_* \mathcal{O}_{X'} \otimes \mathcal{O}_X(mD)) \\ 
+&\leq  h^0(X, \mathcal{O}_X(mD)) + h^0(X,C \otimes \mathcal{O}_X(mD))
+\end{align*}
+
+Since $C \otimes \mathcal{O}_X(mD)$ is supported on a dimension $\leq n-1$ closed subset, lemma \ref{upper} shows that $h^0(X,C \otimes \mathcal{O}_X(mD))$ grows at most like $m^{n-1}$, proving the claim.
+
+$(3 \Rightarrow 4)$ First we prove it assuming $A$ is effective. The exact sequence
+
+$$ 0 \rightarrow \mathcal{O}_X(mD - A) \rightarrow \mathcal{O}_X(mD) \rightarrow \mathcal{O}_A(mD) \rightarrow 0 $$
+
+tells us that
+
+$$ h^0(X,\mathcal{O}_X(mD)) \leq h^0(X,\mathcal{O}_X(mD - A)) + h^0(A,\mathcal{O}_A(mD)) $$
+
+$h^0(A,\mathcal{O}_A(mD))$ grows at most like $m^{n-1}$ by lemma \ref{upper} and $h^0(X,\mathcal{O}_X(mD))$ grows like $m^n$, thus $h^0(X,\mathcal{O}_X(mD - A)) \neq 0$ for some $m >> 0$.
+
+Now we prove the claim where $A$ maybe not effective. Let $r$ be large enough so that $rA$ and $(r+1) A$ are both effective. Then there is an $m$ such that 
+
+$$ mD = (r+1)A + E = A + (rA + E) $$
+
+$(4 \Rightarrow 5)$ Let $mD = A + E$ where $A$ is very ample. Pick a basis $s_0,\dots,s_N$ for $H^0(X,\mathcal{O}_X(A))$ and pick a section $t \in H^0(X,\mathcal{O}_X(E))$. Then the sections, $s_i \otimes t$ give an embedding away from the support of $E$, so $\phi_{mD}$ is birational.
+
+$(5 \Rightarrow 1)$ Immediate.
+
+\end{proof}
+
+Now that we have proven that all of these are equivalent, we can actually strengthen all of them in the following way.
+
+\begin{corollary}
+If $D$ is a big divisor on $X$ then we can substitute "for all $m >> 0$" for statements (2)-(5) in Proposition \ref{big}.
+\end{corollary}
+
+\begin{proof}
+Let $A$ be a very ample divisor such that $A-D$ is also very ample. By \ref{big} (4), there is an $m$ such that
+
+$$ mD = A + E $$
+
+This means that
+
+$$ (m-1)D = (A-D) + E $$
+
+Since $m$ and $m-1$ are coprime, every sufficiently large integer can be written as as sum of them. Thus for every $m' >> 0$, $m'D$ is equal to $A$ plus some effective divisor. The rest of the statements in \ref{big} follow from this one.
+
+\end{proof}
+
+\subsection{Semiample Divisors}
+
+A divisor is \textbf{semiample} is some multiple of it is basepoint-free. 
+
+\begin{theorem}[Semiample fibration]\label{semifib}
+Let $D$ be a semiample divisor on $X$. Then there exists an $m_0 > 0$ such that for all $k > 0$ $\phi_{km_0D}$ factors as
+
+\begin{center}
+\begin{tikzcd}
+X \arrow[d, "\nu"'] \arrow[r, "\phi_{km_0D}"] & \mathbb{P} \\
+Y \arrow[ru, "\iota_k"']                        &           
+\end{tikzcd}
+\end{center}
+
+
+where $\nu$ is surjective, $\iota_k$ is a closed immersion and ${\nu}_* \mathcal{O}_X = \mathcal{O}_Y$.
+\end{theorem}
+
+\begin{proof}
+It is clear from the statement of the theorem that we can assume $D$ is basepoint-free. Then Stein factorization gives us
+
+\begin{center}
+\begin{tikzcd}
+X \arrow[d, "\nu"'] \arrow[r, "\phi_{D}"] & \mathbb{P} \\
+Y \arrow[ru, "\alpha"']                   &           
+\end{tikzcd}
+\end{center}
+
+where $\alpha$ is finite, $\nu$ is surjective and $\nu_*\mathcal{O}_X = \mathcal{O}_Y$. Since the pullback of an ample line bundle along a finite morphism is ample, $\mathcal{L} = \alpha^* \mathcal{O}(1)$ is ample on $Y$. Therefore, for $k >> 0$, $\mathcal{L}^{\otimes k}$ is very ample. Now the theorem follows from the following observation which is important enough to separate it into its own lemma.
+
+\end{proof}
+
+\begin{lemma}
+Let $\nu: X \rightarrow Y$ be a morphism such that $\nu_* \mathcal{O}_X = \mathcal{O}_Y$ and let $\mathcal{L}$ be a line bundle of $Y$. Then
+
+$$ H^0(X, \nu^* \mathcal{L}) = H^0(Y, \mathcal{L}) $$\end{lemma}
+
+\begin{proof}
+The projection formula tells us that
+
+$$ \nu_*\nu^* \mathcal{L} = \nu_* \mathcal{O}_X \otimes \mathcal{L} = \mathcal{L} $$
+
+\end{proof}
+
+\subsection{Nef Divisors}
+
+Given a divisor $D$ and an irreducible curve $C$ (both on $X$), we define the intersection number 
+
+$$C \cdot D = \text{deg}_C (\mathcal{O}(D) \otimes \mathcal{O}_C) $$
+
+By extending by linearity, we can look at the intersection of any $\mathbb{R}-divisor$ and any $1-$cycle with coefficients in $\mathbb{R}$. We call a divisor $D$ \textbf{numerically trivial} if $D \cdot C = 0$ for every 1-cycle $C$. We call a 1-cycle $C$ \textbf{numerically trivial} if $D \cdot C = 0$ for every divisor $D$. Let $NS(X)_{\mathbb{R}}$ be the $\mathbb{R}$ vector space of $\mathbb{R}$-divisors modulo the numerically trivial divisors. Similarly, we define $N_1(X)$ to be the $\mathbb{R}$ vector space of 1-cycles modulo the numerically trivial 1 cycles.
+
+\begin{theorem}[Theorem of the Base]
+$NS_\mathbb{R}(X)$ is finite dimensional.
+\end{theorem}
+
+Intersection numbers give us a perfect pairing
+
+$$ N_1(X) \times NS_\mathbb{R}(X) \rightarrow \mathbb{R} $$
+
+Thus $N_1(X)$ is the dual of $NS_\mathbb{R}(X)$ and is therefore also finite dimensional.
+
+The fact that these are finite dimensional vector spaces lets us use many of the classic tools of convex geometry to study them. The object we will be most concerned with is the cone of cone,
+
+$$ NE(X) = \{ [C] \in N_1(X) : C \text{ is effective} \} $$In particular, we will be focusing on the closure, $\overline{NE(X)}$.
+
+\textbf{Example} Suppose that $D$ is a divisor on $X$ that is generated by global section, i.e. $\phi_D$ is a morphism. Let $C$ be any curve in $X$. First suppose $C$ is contracted to a point by $\phi_D$. Then the pullback on $D$ to $C$ is trivial and $D\cdot C = 0$. Now suppose $C$ is not contracted by $\phi_D$. Then $\phi_D$ restricted to $C$ is a finite morphism and the pullback of $\mathcal{O}_\mathbb{P}(1)$ onto $C$ is the same as the pullback of $\mathcal{O}_X(D)$ onto $C$. Since the pullback of an ample bundle via a finite morphism is ample, $D \cdot C > 0$. This example is summarized in the following,
+
+\begin{proposition}\label{contract}
+Let $D$ be a divisor on $X$ that is generated by global sections and let $C$ by any irreducible curve in $X$. Then $D \cdot C \geq 0$ with equality if and only if $\phi_D$ contracts $C$ to a point.
+\end{proposition}
+
+We call a divisor $D$ \textbf{nef} if $D \cdot C \geq 0$ for all irreducible curves $C \subseteq X$. 
+
+We see from the proposition above that any semiample divisor is nef. A partial converse is the following,
+
+\begin{theorem}\label{fingen}
+Let $D$ be a big and nef divisor on $X$. Then $D$ is semiample if and only if its section ring $R(D) = \oplus_{m=0}^\infty H^0(X, \mathcal{O}_X(mD)$ is finitely generated.
+
+\end{theorem}
+
+\subsection{Ampleness Criteria}
+To prove the ampleness criteria that we need, it will be necessary to use a more general version of intersection numbers. For more details see \cite{MR1644323} but it will be enough to know the following:
+
+Given divisors $D_1,\dots,D_r$ on $X$ and a closed subvariety $V$ on $X$ of dimension $r$, the intersection number $D_1 \cdots D_r \cdot V$ exists, is linear in the $D_i$ and agrees with our earlier definition in the case that $V$ is a curve. The intersection of $D$ with itself $n$ times will be denoted by $D^n$.
+
+We will also need the following theorem
+
+\begin{theorem}[Asymptotic Riemann-Roch]\label{arr}
+Let $D$ be a divisor on $X$ and let $\text{dim}X = n$. Then
+
+$$ \chi( \Oc_X(mD)) = \frac{D^n}{n!} \cdot m^n + O(m^{n-1}) $$
+
+\end{theorem}
+\begin{theorem}[Nakai-Moishezon Criterion]\label{nakai}
+Let $D$ be a divisor on a projective scheme $X$. Then $D$ is ample if and only if
+
+$$ D^{dim V}\cdot V > 0 $$
+for every positive dimensional subvariety $V \subseteq X$.
+
+\end{theorem}
+
+This proof is taken from \cite{MR2095471}
+
+\begin{proof}
+If $D$ is ample then the statement follows from the fact that the degree of a positive dimensional variety in projective space is always strictly positive. 
+
+Now we assume the condition holds. We may assume $X$ is integral by \cite{Hartshorne77}[III, Ex 5.7]. The result follows from Proposition \ref{amplecurve} when dim$X$ = 1 so we proceed by induction on the dimension of $X$. Set dim$X = n$ and assume the theorem holds for all schemes of dimension $n-1$. Write $D = A-B$ where $A$ and $B$ are very ample. We have two exact sequences:
+
+$$ 0 \rightarrow \Oc_X(mD-B) \rightarrow \Oc_X((m+1)D) \rightarrow \Oc_A((m+1)D) \rightarrow 0 $$
+$$ 0 \rightarrow \Oc_X(mD-B) \rightarrow \Oc_X(mD) \rightarrow \Oc_B(mD) \rightarrow 0 $$
+By induction $\Oc_A(D)$ and $\Oc_B(D)$ are ample and thus for $m >> 0$ all cohomology will vanish for them. Thus, our two exact sequences tell us that for $i \geq 2$,
+
+$$ H^i(X, \Oc_X(mD)) = H^i(X, \Oc_X(mD-B)) = H^i(X, \Oc_X((m+1)D)) $$
+Thus, $h^i(X, \Oc_X(mD))$ stabilizes for all $m >> 0$ and $i \geq 2$.
+
+This means that
+
+$$ \chi( \Oc_X(mD)) = h^0(X, \Oc_X(mD)) - h^1(X, \Oc_X(mD)) + \text{(constant)} $$so Theorem \ref{arr} implies that $h^0(X, \Oc_X(mD)) \neq 0$ for $m >>0$. (In fact, it proves that $D$ is big by Proposition \ref{big}, but we do not need this)
+
+Now let us look at the exact sequence
+
+$$ 0 \rightarrow \Oc_X((m-1)D) \rightarrow \Oc_X(mD) \rightarrow \Oc_D(mD) \rightarrow 0 $$
+Once again, induction tells us that $\Oc_D(D)$ is ample, thus it's higher cohomologies vanish and we get surjections
+
+$$ H^1(X, \Oc_X((m-1)D)) \rightarrow H^1(X, \Oc_X(mD)) $$
+Since they are finite dimensional, for large enough $m$, these surjections will become isomorphisms (each surjection weakly decreases the dimension). Thus the map
+
+$$  H^0(X, \Oc_X(mD)) \rightarrow H^0(D, \Oc_D(mD))  $$
+
+is surjective for $m>>0$. Since $\Oc_D(mD)$ is globally generated, Nakayama's Lemma shows that $\Oc_X(mD)$ is globally generated on the support of $D$. Since $\Oc_D(mD)$ is globally generated away from the support of $D$, $\Oc_D(mD)$ is generated by global sections everywhere.
+
+Finally, let $\phi_{mD}$ be the morphism defined by $mD$ for some $m$ where $\Oc_D(mD)$ is globally generated. No curve can get contracted by $\phi_{mD}$ (as that would cause an intersection of 0 between the curve and $D$) and so it must be a finite morphism. Since the pullback of an ample bundle under a finite morphism is ample, $mD$ is ample, completing the proof.
+
+\end{proof}
+
+We use this to prove another ampleness criteria that will be useful for us.
+
+\begin{lemma}
+Let $D$ be a divisor on $X$. Then $D$ is nef if and only if 
+
+$$ D^{dim V}\cdot V \geq 0 $$
+for every positive dimensional subvariety $V \subseteq X$.
+
+\end{lemma}
+\begin{proof}
+\cite{MR2095471}[1.4.9]
+\end{proof}
+
+\begin{theorem}[Kleinman's Ampleness Criterion]\label{klein}
+
+
+\end{theorem}
+
+\section{Minimal Model Program}\label{mmp}
+
+\subsection{Canonical Models}
+
+For the remainder of this talk, we will be discussing the case of when $X$ is of general type.
+
+Every curve is birational to a unique smooth curve $C$ and, in the case $C$ is of general type, $\omega_C$ is ample. In higher dimensions many smooth varieties can all be birational to each other. With this in mind, we can at least hope that the following is true.
+
+\textbf{Goal:} Every variety of general type is uniquely birational to a smooth variety $X$ such that $\omega_X$ is ample.
+
+Unfortunately, this statement is false. However, if we weaken our smoothness condition then it becomes true. Because of this, we must allow some mild singularities. First let us define the canonical sheaf for a normal variety.
+
+Let $X$ be a normal variety and let $\iota: X \setminus \text{Sing} X \rightarrow X$ be the inclusion map, then we define 
+
+$$\omega_X = \iota_* \omega_{X \setminus \text{Sing} X} $$
+This gives a rank 1 reflexive sheaf on $X$ and thus there is a divisor $K_X$ (not unique) such that $\omega_X = \mathcal{O}_X(K_X)$
+
+\begin{definition}
+Let $X$ be a normal variety. $X$ has \textbf{canonical singularities} if
+
+\begin{itemize}
+  \item $K_X$ is $\mathbb{Q}$-Cartier and
+  \item $f_*(\mathcal{O}( mK_{\tilde{X}})) = \mathcal{O}(mK_X) $ for any resolution of singularities $f: \tilde{X} \rightarrow X$.
+\end{itemize}
+\end{definition}
+
+There is a stronger version of this definition which we will need and we define here for convenience.
+
+\begin{definition}
+Let $X$ be a normal variety. $X$ has \textbf{terminal singularities} if
+
+\begin{itemize}
+  \item $K_X$ is $\mathbb{Q}$-Cartier and
+  \item $f_*(\mathcal{O}( mK_{\tilde{X}} - E)) = \mathcal{O}(mK_X) $ for any resolution of singularities $f: \tilde{X} \rightarrow X$ where $E$ is the exceptional divisor.
+\end{itemize}
+\end{definition}
+
+Allowing these singularities, we can now achieve our goal from before.
+
+\begin{theorem}\label{can_main}
+Let $X$ be a variety of general type. Then $X$ is uniquely birational to a variety $X^{can}$ such that $X^{can}$ has canonical singularities and $K_{X^{can}}$ is ample. In fact,
+
+$$ X^{can} \cong Proj \oplus_{m=0}^\infty H^0(X, \mathcal{O}(mK_X)) $$
+
+\end{theorem}
+
+$X^{can}$ is called the \textbf{canonical model} of $X$. We call the ring $\otimes_{m=0}^\infty H^0(X, \mathcal{O}(mK_X))$ the \textbf{canonical ring} of $X$ and denote it $R(K_X)$. It is clear that the canonical ring is a birational invariant among varieties with canonical singularities. With such an explicit form, one might think this theorem is straightforward. The big problem is that it is not clear that $R(K_X)$ is finitely generated, so $Proj R(K_X)$, a priori, may not even be a variety. This leads us to the following:
+
+\begin{conjecture}[Abundance Conjecture]\label{abun}
+Let $X$ be a variety with terminal singularities. Then
+\begin{itemize}
+\item $R(K_X)$ is finitely generated.
+\item If $K_X$ is nef then $K_X$ is semiample.
+\end{itemize}
+\end{conjecture}
+
+We see that the two are related by Theorem \ref{fingen}.
+
+The rest of this section will be devoted to introducing the minimal model program and showing how it implies \ref{abun}.
+
+\subsection{Running the MMP}
+
+We call a normal variety $X$ a \textbf{minimal model} if $X$ has terminal singularities and $K_X$ is nef. The MMP is an algorithm for altering our variety in such a way that $K_X$ becomes closer to becoming nef with each step. This is a much more trackable problem than our original problem because if $K_X$ is not nef then there must exist an irreducible curve $C$ such that $K_X \cdot C < 0$. Now that we have identified a problem curve we can try and find a morphism that contracts $C$. In this section, we will show how to identify the "right" curve to contract, as well as how to construct the contraction.
+
+Now we are ready to state the two main theorems of the minimal model program, for proofs, see \cite{MR1658959}.
+
+\begin{theorem}[Basepoint-free Theorem]\label{bpf}
+Let $X$ be a variety with terminal singularities. Let $D$ be a nef divisor such that $aD-K_X$ is nef and big for some $a>0$, then $mD$ is basepoint-free for all $m >> 0$.
+\end{theorem}
+
+\begin{theorem}[Cone Theorem]\label{cone}
+Let $X$ be a variety with terminal singularities. 
+
+(a) There exists (countably many) rational curves $C_j \subset X$ such that $0 \leq -K_X \cdot C_j \leq 2 \text{dim} X$ and
+
+$$ \overline{NE}(X) = \overline{NE}(X)_{K_X \geq 0} + \sum \mathbb{R}_{\geq 0} [C_j] $$(b) For any $\epsilon > 0$ and ample $A$,
+
+$$ \overline{NE}(X) = \overline{NE}(X)_{K_X + \epsilon A \geq 0} + \sum_{\text{finite}} \mathbb{R}_{\geq 0} [C_j] $$(c) For any $K_X$-negative extremal face $F$ of $\overline{NE}(X)$, there is a unique morphism $\psi_F: X \rightarrow Z$ onto a variety such that ${\psi_F}_* \Oc_X = \Oc_Z$ and an irreducible curve $C \subseteq X$ is contracted by $\psi_F$ if and only if $[C] \in F$.
+
+
+\end{theorem}
+
+We will only be giving a proof of part (c) of the cone theorem as we believe the reader may be most interested in where this morphism could be coming from.
+
+\begin{proof}[Proof of (c)]
+Let $F$ be a $K_X$-negative extremal face of $\overline{NE}(X)$. Let $A$ be an ample divisor on $X$. By slicing with a hyperplane in $\overline{NE}(X)$ and using compactness, there exists an $\epsilon > 0$ such that $F$ is $K_X + \epsilon A$ negative as well. Now we can use part (b) of the cone to see that $F$ is a face of the polygonal cone $\overline{NE}(X)_{K_X + \epsilon A \leq 0}$. Part (b) also shows that $F$ is defined over $\mathbb{Q}$, thus the set of linear functionals that vanish on $F$, $V \subseteq N_1(X)^*$ is defined over $\mathbb{Q}$. We can use the fact that $\overline{NE}(X)_{K_X + \epsilon A \leq 0}$ is polygonal to show that the set of supporting functions (those that vanish on $F$ and are positive on the rest of $\overline{NE}(X) \setminus 0$) is an open subset of $V$, therefore it contains a point defined over $\mathbb{Q}$. But $N_1(X)^* = NS_{\mathbb{R}}(X)$ as we saw earlier, so taking a multiple of the point we just found shows that there is a Cartier divisor $D$ with the property that given any irreducible curve $C \subseteq X$, $D \cdot C$ is zero if $[C] \in F$ and is strictly positive otherwise.
+
+Now we will use Theorem \ref{bpf} to show that $D$ is semiample. Since $D$ is zero on $F$ and positive elsewhere, $mD - K_X$ will be strictly positive on all of $\overline{NE}(X) \setminus 0$, thus it is ample by Theorem \ref{klein}. So we can apply Theorem \ref{bpf} to show that $mD$ is basepoint-free for $m >> 0$. Let $\psi_F: X \rightarrow Z$ be the map determined by $mD$ for some large $m$ with codomain restricted to its image. Then \ref{semifib} shows that ${\psi_F}_* \Oc_X = \Oc_Z$ and Proposition \ref{contract} shows that $C$ is contracted if and only if $[C] \in F$.
+
+Now we prove the uniqueness of $\psi_F$. The condition that $C$ is contracted if and only if $[C] \in F$ determines the topological space of $Z$ as well as the map $\psi_F$. The only option is to have $Z$ be the quotient of $X$ by the relation that identifies points based on if they are both on a curve in $F$ and $\psi_F$ is the quotient map. The scheme structure is determined by the other condition as $\Oc_Z = {\psi_F}_* \Oc_X$. So the content of the theorem is really showing that $Z$ is a projective variety.
+
+\end{proof}
+
+\textbf{Minimal Model Program}: The input of the minimal model program is a $\mathbb{Q}$-factorial variety with terminal singularities. The output is a sequence of $\mathbb{Q}$-factorial varieties with terminal singularities and birational maps:
+
+$$ X = X_0 \dashrightarrow X_1 \dashrightarrow \dots \dashrightarrow X_n$$
+
+where it ends with either $K_{X_n}$ nef or $X_{n-1} \rightarrow X_n$ a Fano fibration (see step 2).
+
+We define the program recursively so assume we are given a variety with terminal singularities $X_i$.
+
+\textit{Step 1:} If $K_{X_i}$ is nef then we are done. Otherwise, use the cone theorem to find a $K_{X_i}$-negative extremal ray (1-dimensional face) $R$ and consider the contraction $\phi_R: X_i \rightarrow Z$.
+
+\textit{Step 2:} We break this step up into cases:
+\begin{itemize}
+\item (Divisorial contraction) dim $Z$ = dim $X_i$ and dim Ex($\psi_R$) = dim $X_i$ - 1: In this case we can actually show that $\psi_R$ contracts a single irreducible divisor of $X$. Using this, we can show that $Z$ has terminal singularities and dim $N_1(Z) = \text{dim } N_1(X) - 1$. So we set $X_{i+1} = Z$ and let $\phi_R$ be the birational morphism.
+\item (Flipping contraction) dim $Z$ = dim $X_i$ and dim Ex($\psi_R$) < dim $X_i$ - 1: In this case, $Z$ has bad singularities (for example, $K_Z$ is not $\mathbb{Q}$-Cartier). In this case we let $X_{i+1} = X_i^+$ be the $K_X$-flip of $X_i$ which we discuss below.
+
+\item (Fano Fibration) dim $Z$ < dim $X_i$: In this case, we accept the map $\psi_R$ as an ending point for the minimal model program. Pick a very general fiber $F$ of $\psi_R$. Then the normal bundle of $F$ will be trivial (a smooth point in $Z$ will be a complete intersection in some neighborhood, pulling back generators shows that $F$ is a complete intersection in some neighborhood and the sections trivialize the conormal bundle). This implies that $K_F = (K_X)_{|F}$ and thus $K_F$ will have negative intersection will all effective 1-cycles of $F$. In fact, using the relative Kleinman criterion, we can show that $-K_F$ is ample, making $F$ a Fano variety. 
+\end{itemize}
+
+We should note that if the minimal model program is applied to a variety of general type, then everything works the case where dim $Z$ < dim $X_i$ will not happen. Since $K_{X_i}$ is big. Writing $K_{X_i} = A + E$ with $A$ ample and $E$ effective, we see that any curve not contained in the support of $E$ must have strictly positive intersection with $K_{X_i}$, thus $\phi_R$ cannot drop the dimension of $X$.
+
+If we are willing to accept all of the claims made, then the final case to deal with is the "flips" mentioned in the second case. What we are given is a map $\psi: X \rightarrow Z$ where $-K_X$ is relatively ample. A \textbf{$K_X$-flip} of $\psi$ is a birational map $\psi^+: X^+ \rightarrow Z$ from a normal variety $X^+$ such that
+
+\begin{itemize}
+\item $K_{X^+}$ is $\mathbb{Q}$-Cartier and relatively ample.
+\item Ex($\psi^+$) has codimension at least 2.
+\end{itemize}
+
+We see from the fact that dim $N_1(X)$ decreases with each divisorial contraction that there can only be finitely many of these. It is not known, however, whether or not there can be infinitely many flips.
+
+
+Now let $X$ be a variety of general type. After running the MMP, we obtain a variety $X'$ which is birational to $X$ and is a minimal model. That means that $K_{X'}$ is nef and since $X'$ is birational to $X$, $K_{X'}$ is big as well. Therefore, applying Theorem \ref{bpf} to $X'$, we get that $K_{X'}$ is semiample. Therefore, $R(K_{X'}) = R(K_X)$ is finitely generated by Theorem \ref{fingen}, proving the abundance conjecture in the case that $X$ is of general type (provided the MMP works).
+
+
+\section{Current State of the MMP}
+
+The three main problems relating to the MMP are the existence of flips, termination of flips (no infinite chains of flips) and the abundance conjecture.
+
+In dimension 3, the existence and termination of flips was proven in \cite{Mori88}. The existence of flips in dimension 4 was proven in \cite{Shokurov03}. Finally, in \cite{MR2359343} and \cite{MR2601039} it was shown that flips exist in all dimensions. It is also shown in \cite{MR2601039} that if one chooses which ray to contract at each step carefully enough, then there will be no infinite sequence of flips. This is enough to prove that the minimal model program works for varieties of general type.
+
+There are still many open problems relating to the MMP that are interesting in their own right. The existence of flips has been fully proven but the termination of flips and the abundance conjecture are still both open. Currently, I am most interested in how the results of \cite{MR2601039} can be extended.
+
+
+\bibliographystyle{alpha} % We choose the "plain" reference style
+\bibliography{Ref}
+
+
+
+\end{document}
