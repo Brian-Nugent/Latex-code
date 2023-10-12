@@ -1,0 +1,495 @@
+\documentclass[a4paper]{article}
+
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{yfonts}
+\usepackage{frcursive}
+\usepackage{aurical}
+%\usepackage{LobsterTwo}
+\usepackage{egothic}
+\usepackage{miama}
+\setlength\parindent{0pt}
+\setlength\parskip{5pt}
+
+
+%% Sets page size and margins
+\usepackage[a4paper,top=3cm,bottom=2cm,left=2.5cm,right=2.5cm,marginparwidth=2cm]{geometry}
+
+%% Useful packages
+\usepackage{amsmath, latexsym, graphicx, amsthm, amssymb, scrextend, setspace,wasysym, marvosym, tikz}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{tikz-cd}
+
+\newcommand{\m}{\mathfrak{m}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\LL}{\mathcal{L}}
+\newcommand{\OO}{\mathcal{O}}
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Oc}{\mathcal{O}}
+\newcommand{\al}{\alpha}
+\newcommand{\ao}{\alpha_0}
+\newcommand{\an}{\alpha_n}
+\newcommand{\zi}{\Z[i]}
+\newcommand{\be}{\begin{equation}} 
+\newcommand{\ee}{\end{equation}}   
+\newcommand{\beq}{\begin{eqnarray*}} 
+\newcommand{\eeq}{\end{eqnarray*}} 
+\newcommand{\jump}{\vspace{0.3cm}}
+\let\newproof\proof
+
+\makeatletter
+\newcommand*\bigcdot{\mathpalette\bigcdot@{.5}}
+\newcommand*\bigcdot@[2]{\mathbin{\vcenter{\hbox{\scalebox{#2}{$\m@th#1\bullet$}}}}}
+\makeatother
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{prop}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{counterexample}[theorem]{Counterexample}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\numberwithin{theorem}{section}
+\numberwithin{equation}{section}
+
+\title{Cohomology of a Complex Variety}
+\author{Brian Nugent}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+    The goal of this paper is to prove that the singular cohomology of a smooth variety (with the euclidean topology) can be computed using the algebraic de Rham complex (a complex of sheaves in the Zariski topology). We use this to prove the Lefschetz Hyperplane Theorem as a topological application and the Kodiara Vanishing Theorem as an algebraic application.
+\end{abstract}
+
+For the entirety of this paper, a variety will mean an integral separated scheme of finite type over $\C$. The first section of this paper is devoted to proving all of the technical results relating the singular cohomology of a variety to the cohomology of certain algebraic sheaves. These include showing that singular cohomology is the same as the sheaf cohomology of the constant sheaf, GAGA and the Hodge to De Rham spectral sequence.
+
+In the second section, we use these technical results to prove the Lefschetz Hyperplane Theorem, Kodaira Vanishing Theorem and a theorem about the Picard groups of hypersurfaces.
+
+\tableofcontents
+
+\section{Analysis, Algebra and Topology}
+
+\subsection{Sheaf Cohomology vs. Singular Cohomology} \label{sheaftosing}
+
+\begin{theorem} \label{sheafvsing}
+    Let $X$ be a locally contractible topological space and let $R$ be a ring. Let $A$ be an $R$-module and $\underline{A}$ the constant sheaf on $X$ associated to $A$. Then
+
+    $$ H^i(X,A) \cong H^i(X,\underline{A}) $$
+
+    where the left side is singular cohomology and the right side is sheaf cohomology.
+\end{theorem}
+
+\begin{proof}
+
+For an open set $U \subseteq X$, we let $C^p(U,A)$ denote the $R$ module of $p$-cochains of $U$. Then we can form a presheaf $\mathcal{C}^p$ where $\mathcal{C}^p(U) = C^p(U,A)$. The usual differentials on $C^p(U,A)$ give presheaf maps from $\mathcal{C}^p$ to $\mathcal{C}^{p+1}$ forming a complex $\mathcal{C}^{\bigcdot}$. We can append the constant sheaf $\underline{A}$ to the start of this complex ($\underline{A}$ is the sheaf of locally constant functions on $X$ with values in $A$ and $\mathcal{C}^0$ is the sheaf of functions on $X$ with values in $A$),
+
+$$ 0 \rightarrow \underline{A} \rightarrow \mathcal{C}^0 \rightarrow \mathcal{C}^1 \rightarrow \dots $$
+
+The cohomology of the complex $\mathcal{C}^{\bigcdot}$ at the $p^{th}$ spot is $\mathcal{H}^p$, the presheaf that is $H^p(U,A)$ (singular cohomology) on an open set $U$. Since $X$ is locally contractible, this implies that $0 \rightarrow \underline{A} \rightarrow \mathcal{C}^{\bigcdot}$ is exact on stalks. It is also clear that each $\mathcal{C}^p$ is flasque (we can take a cochain $f$ of $U$ and extend it to a cochain $\tilde{f}$ on $X$ that is zero for any $p$-simplex not contained in $U$). 
+
+So if the $\mathcal{C}^p$ were sheaves, we would be done here since sheaf cohomology can be calculated on a flasque resolution and
+
+$$ h^i \Gamma(X,\mathcal{C}^{\bigcdot}) = h^i C^{\bigcdot}(X,A) = H^i(X,A) $$
+
+where the last equality is the definition of singular cohomology.
+
+Unfortunately, they are not sheaves and so a somewhat technical argument is needed to show that if we replace the $\mathcal{C}^p$ with their sheafifications, everything still works out. For a simple proof in the paracompact case, see \href{http://www-personal.umich.edu/~mmustata/SingSheafcoho.pdf}{here} and for the proof in full generality, see \href{https://arxiv.org/abs/1602.06674}{here}.
+
+\end{proof}
+
+\subsection{Analytification}
+In this section, we give an intuitive although imprecise definition of the analytification of a variety. If statements like "the usual topology" and "thinking of $X$ like a smooth manifold" don't scare you then feel free to skip this section.
+
+An \textbf{affine complex analytic space} is a locally ringed space $(Z,\OO_Z)$ where $Z$ is a closed subspace of an open set $U \subseteq \C^n$ (we are using the euclidean topology here) such that $Z$ is the zero set of finitely many holomorphic functions, $f_1,\dots,f_k$ and $\OO_Z = \OO_U/I_Z$ where $\OO_U$ is the sheaf of holomorphic functions on $U$ and $I_Z$ is the ideal generated by $f_1,\dots,f_k$. A \textbf{complex analytic space} is a locally ringed space locally isomorphic to an affine complex analytic space. Note that a complex manifold is an example of a complex analytic space.
+
+Because polynomials are holomorphic, given an affine variety $X$ along with an embedding into $\C^n$, we obtain an affine complex analytic space $X^{an}$ (using the defining polynomials of $X$ as the $f_i$ in the definition of $X^{an}$). Because the Zariski topology is coarser then the euclidean topology, we get a continuous map $h: X^{an} \rightarrow X$. In fact, because polynomials are holomorphic, we have a map $\OO_X \rightarrow h_* \OO_{X^{an}}$ making $h$ into a map of locally ringed spaces.
+
+It turns out $X^{an}$ is independent of the chosen embedding and thus we call it \textit{the} analytification of $X$. Given any variety, we can form its analytification, $h: X^{an} \rightarrow X$ by performing the analytification process to affine patches and then gluing.
+
+Here we list some important properties of analytification:
+
+\begin{proposition}
+    Let $X$ be a variety and $h: X^{an} \rightarrow X$ its analytification. Then,
+    \begin{enumerate}
+        \item $X$ is seperated (resp. proper, connected) if and only if $X^{an}$ is Hausdorff (resp. compact, connected).
+        \item $X$ is smooth if and only if $X^{an}$ is a complex manifold.
+        \item $X^{an}$ is the set of closed points of $X$ (with a different topology) and $h$ is the inclusion map.
+        \item Let $\hat{h}_x : \hat{\OO}_{X,x} \rightarrow \hat{\OO}_{X^{an},x}$ be the induced map on the completion of the local rings at a closed point $x \in X$. Then $\hat{h}_x$ is an isomorphism.
+    \end{enumerate}
+    
+\end{proposition}
+
+The last property has some especially nice consequences. Faithfully flat descent tells us that many properties of a local ring can be checked on it's completion. Since $h$ is an isomorphism on completions this tells us that properties such as reducedness, normality and regularity can be checked on the analytic side (the definitions are the same in the analytic case, just check the property at the local rings). It also tells us that the map $h$ is flat.
+
+\subsection{GAGA}
+
+Given an $\OO_X$ module $\F$, we obtain an $\OO_{X^{an}}$ module $h^* \F$, which we denote $\F^{an}$.
+
+\begin{theorem}[GAGA] \label{GAGA}
+    Let $X$ be a projective variety and let $h: X^{an} \rightarrow X$ be it's analytification. Then $(\hspace{2.5mm})^{an}$ is an equivalence of categories between coherent sheaves on $X$ and coherent sheaves on $X^{an}$. Moreover, there are natural isomorphisms
+
+    $$ H^i(X,\mathcal{F}) \overset{\sim}{\rightarrow} H^i(X^{an},\mathcal{F}^{an}) $$
+\end{theorem}
+
+%The one major piece left out of the proof is Oka's Coherence Theorem, which states that $\mathcal{O}_{X^{an}}$ is coherent. A proof of this can be found on page 59 of the book Coherent Analytic Sheaves by Grauert and Remmert.
+
+We will prove only the part of GAGA that we will use, in particular, we prove that there are natural isomorphisms,
+
+$$ H^i(X,\mathcal{F}) \overset{\sim}{\rightarrow} H^i(X^{an},\mathcal{F}^{an})  $$
+
+for any coherent sheaf $\F$ on $X$. For a proof of the rest, see \href{https://math.berkeley.edu/~chd/expo/GAGA.pdf}{here}. 
+
+For our proof we need to borrow one fact from analysis which is essentially an analytic version of the fact that coherent sheaves on affine varieties have no higher cohomology.
+
+\begin{proposition} \label{stein}
+    Let $U$ be an affine variety and $\mathcal{F}$ a coherent sheaf on $U$. Then $H^i(U^{an},\F^{an}) = 0$ for all $i > 0$.
+\end{proposition}
+
+
+\begin{proof}[Proof of Theorem \ref{GAGA}]
+
+Let $X = \bigcup U_i$ be an affine open cover of $X$. Then we can compute $H^i(X,\F)$ using Čech cohomology with respect to this cover and $H^i(X^{an},\F^{an})$ using Čech cohomology with respect to the cover $X^{an} = \bigcup U^{an}_i$ (by Proposition \ref{stein}). Since we have natural maps $\F(U_i) \rightarrow \F^{an}(U_i^{an})$, we obtain a map of Čech complexes, which gives us a natural map $H^i(X,\mathcal{F}) \rightarrow H^i(X^{an},\F^{an})$.
+
+We will now check that this map is an isomorphism through a series of reductions.
+
+First we reduce to the case $X = \PP^r$ which we can do since if $i: X \rightarrow \PP^r$ is an embedding, then $H^i(X,\F) = H^i(\PP^r,i_* \F)$ and $H^i(X^{an},\F^{an}) = H^i((\PP^r)^{an},i_* \F^{an})$ by \cite{Hartshorne77}[III, 2.10] (notice this result is for any topological space so it works on the algebraic and analytic side). So we now assume $X = \PP^r$.
+
+If $\F = \OO_X$, then $H^0(X,\OO_X) = \C = H^0(X^{an}, \OO_{X^{an}})$ and all the other cohomology groups are zero by explicit computation (using Čech cohomology).
+
+Now let $\F = \OO_X(n)$ with $n > 0$. We have a short exact sequence,
+
+$$ 0 \rightarrow \OO_X(n-1) \rightarrow \OO_X(n) \rightarrow \OO_H(n) \rightarrow 0 $$
+
+where $H$ is a hyperplane in $X$. We apply the long exact sequence on cohomology then apply our natural map to obtain, 
+
+\vspace{0.5 cm}
+
+% https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAAkA9YLAWgEYAvgAoAGqQA6EgLZ0cACwDGjYAHlBAfXbCwASl0hBpdJlz5CKfuSq1GLNlx4jxU2QuUM1IsAP2HjIBjYeAREAEzW1PTMrIgc3FjOkjJySirqOn5GJsHmRADMkbYxDglJrqkeXlqZBtmBpiEWyAAsRdH2cY5YANRCYsluaZ4ZPvxZAUFmoShk-DYdsfE8AiKOdGBGFe7pmsDrm94TOdPNEfNRdkvdztwbWyk7I0d1k415lqQXxZ3LiWJ3TaDSq7HS+V4nJoFL4LK6lJzCA4PIZVdQafaAwQvfyQj6tGGXEpdBJ9W7Ae7Ap5eMHjOo2GBQADm8CIoAAZgAnCDSJBkEA4CBIACs9U53N51AFSCEATFPMQVn5gsQYVFXPlESVSHyavFiEKWsQLV18rahoAnCbtZLlQAOK2IW02pCW2XqpAANmdjodAHZvR6HULvb6HYqpYhQ269ZqI4GKIIgA
+\begin{tikzcd}[column sep=small]
+{H^{i-1}(X,\mathcal{O}_H(n))} \arrow[d] \arrow[r]   & {H^{i}(X,\mathcal{O}(n-1))} \arrow[r] \arrow[d] & {H^{i}(X,\mathcal{O}(n))} \arrow[r] \arrow[d] & {H^{i}(X,\mathcal{O}_H(n))} \arrow[r] \arrow[d]   & {H^{i+1}(X,\mathcal{O}(n-1))} \arrow[d] \\
+{H^{i-1}(H^{an},\mathcal{O}_{H^{an}}(n))} \arrow[r] & {H^{i}(X^{an},\mathcal{O}(n-1))} \arrow[r]      & {H^{i}(X^{an},\mathcal{O}(n))} \arrow[r]      & {H^{i}(H^{an},\mathcal{O}_{H^{an}}(n))} \arrow[r] & {H^{i+1}(X^{an},\mathcal{O}(n-1))}     
+\end{tikzcd}
+
+\vspace{0.5 cm}
+
+Note that $H \cong \PP^{r-1}$ so induction on $n$ and $r$ plus the five lemma shows that the map $H^i(X,\OO(n)) \rightarrow H^{i}(X^{an},\mathcal{O}(n))$ is an isomorphism as desired. For the case $n < 0$ we can do the same proof, just with downward induction on $n$.
+
+Now we do the case that $\F$ is an arbitrary coherent sheaf. We prove the theorem by downward induction on $i$. For $i > r$, both sides are 0 by Čech cohomology, so the theorem holds trivially. Write $\F$ as the quotient of a direct sum of line bundles,
+
+$$ 0 \rightarrow \mathcal{G} \rightarrow \mathcal{E} \rightarrow \F \rightarrow 0 $$
+
+and we once again write out the long exact sequence,
+
+\begin{tikzcd}
+{H^{i}(X,\mathcal{G})} \arrow["\psi",d] \arrow[r]   & {H^{i}(X,\mathcal{E})} \arrow[r] \arrow[d] & {H^{i}(X,\F)} \arrow[r] \arrow["\phi",d] & {H^{i+1}(X,\mathcal{G})} \arrow[r] \arrow[d]   & {H^{i+1}(X,\mathcal{E})} \arrow[d] \\
+{H^{i}(X^{an},\mathcal{G}^{an})} \arrow[r] & {H^{i}(X^{an},\mathcal{E}^{an})} \arrow[r]      & {H^{i}(X^{an},\F^{an})} \arrow[r]      & {H^{i+1}(X^{an},\mathcal{G}^{an})} \arrow[r] & {H^{i+1}(X^{an},\mathcal{E}^{an})}     
+\end{tikzcd}
+
+We wish to show $\phi$ is an isomorphism. The maps involving $\mathcal{E}$ are isomorphisms by the previous case so by induction all the vertical maps shown above besides $\phi$ and $\psi$ are isomorphisms. By the four lemma (ignoring $\psi$ for now) we obtain that $\phi$ is surjective. This shows that $\phi$ is surjective for \textit{any} coherent sheaf, in particular $\psi$ is surjective. So we can now use the other four lemma on the leftmost four maps to show that $\phi$ is injective, completing the proof.
+
+\end{proof}
+
+\subsection{Hypercohomology}
+
+The final thing we need before proving our main theorem is a bit of general nonsense. Sheaf hypercohomology is a generalization of sheaf cohomology for complexes. For the sake of simplicity, in this section we assume all complexes are bounded below and all sheaves are sheaves of abelian groups.
+
+Let $\F^{\bigcdot}$ be a complex of sheaves on a scheme $X$. First, we find a complex $I^{\bigcdot}$ where each $I^p$ is injective, along with a quasi-isomorphism $\F^{\bigcdot} \rightarrow I^{\bigcdot}$ (ex. take the total complex of a Cartan-Eilenberg resolution of $\F^{\bigcdot}$). We define the hypercohomology of $\F^{\bigcdot}$ by
+
+$$ \mathbb{H}^p(X,\F^{\bigcdot}) = h^p \Gamma(X,I^{\bigcdot}) $$
+
+This definition has the downside that it is not clear that it is well defined, but if we take that as a given, it is easy to prove some immediate consequences.
+
+\begin{proposition} \label{hyper}
+    Let $X$ be a scheme and $\F^{\bigcdot}$ a complex of sheaves on $X$.
+    \begin{enumerate}
+        \item If $\F$ is a sheaf thought of as a complex concentrated in degree 0, then $\mathbb{H}^p(X,\F) = H^p(X,\F)$.
+        \item If $\F^{\bigcdot} \rightarrow \mathcal{G}^{\bigcdot}$ is a quasi-isomorphism then $\mathbb{H}^p(X,\F^{\bigcdot}) \cong \mathbb{H}^p(X,\mathcal{G}^{\bigcdot})$.
+        \item There is a convergent spectral sequence
+        $$ E_1^{pq} = H^p(X,\F^q) \Rightarrow \mathbb{H}^{p+q}(X,\F^{\bigcdot}) $$
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    We start by proving (1). Let $\F \rightarrow I^{\bigcdot}$ be an injective resolution. We can think of this as a quasi-isomorphism from the complex with $\F$ at degree zero to the complex $I^{\bigcdot}$. Thus,
+    
+    $$ \mathbb{H}^p(X,\F) = h^p \Gamma(X,I^{\bigcdot}) = H^p(X,\F) $$
+
+    Now we prove (2). Pick a quasi-isomorphism $\mathcal{G}^{\bigcdot} \rightarrow I^{\bigcdot}$. Then composition gives a quasi-isomorphism $\F^{\bigcdot} \rightarrow \mathcal{G}^{\bigcdot} \rightarrow I^{\bigcdot}$, thus
+
+    $$ \mathbb{H}^p(X,\F^{\bigcdot}) = h^p \Gamma(X,I^{\bigcdot}) = \mathbb{H}^p(X,\mathcal{G}^{\bigcdot}) $$
+
+    The spectral sequence in (3) is one of the double complex spectral sequences applied to a Cartan-Eilenberg resolution of $\F^{\bigcdot}$.
+    
+\end{proof}
+
+\subsection{Algebraic De Rham Cohomology} \label{alg}
+
+For a smooth variety $X$, we define the algebraic de Rham complex, $\Omega_X^{\bigcdot}$
+
+$$ 0 \rightarrow \mathcal{O}_X \overset{d}{\rightarrow} \Omega_X^1 \overset{d}{\rightarrow} \dots \overset{d}{\rightarrow} \Omega_X^n \rightarrow 0 $$
+
+where $\Omega_X^p = \bigwedge^p \Omega_X^1$ and the maps $d$ are locally defined by
+
+$$ r (dr_1 \wedge \dots \wedge dr_p) \mapsto dr \wedge dr_1 \dots \wedge dr_p$$
+
+Since $X$ is smooth, $X^{an}$ is a complex manifold and if we let $\Omega_{X^{an}}^p = (\Omega_X^p)^{an}$, we recover the classical de Rham complex, $\Omega_{X^{an}}^{\bigcdot}$ (you can check that this definition agrees with the classical manifold definition by checking locally). By the Poincaré Lemma,
+
+$$ 0 \rightarrow \underline{\C} \rightarrow \mathcal{O}_{X^{an}} \overset{d}{\rightarrow} \Omega_{X^{an}}^1 \overset{d}{\rightarrow} \dots \overset{d}{\rightarrow} \Omega_{X^{an}}^n \rightarrow 0 $$
+
+is exact, where $\underline{\C}$ is the constant sheaf associated to $\C$ on $X^{an}$. This implies that $\Omega_{X^{an}}^{\bigcdot}$ is a resolution of $\underline{\C}$ and thus,
+
+$$ H^i(X^{an},\C) = H^i(X^{an},\underline{\C}) = \mathbb{H}^i(X^{an},\Omega_{X^{an}}^{\bigcdot}) $$
+
+The first equality being from Theorem \ref{sheafvsing} and the second from \ref{hyper} (1) and (2). The final group can be calculated from the hypercohomology spectral sequence \ref{hyper} (3),
+
+\begin{equation} \label{specseq}
+    E_1^{pq} = H^p(X^{an},\Omega_{X^{an}}^q) \Rightarrow \mathbb{H}^{p+q}(X^{an},\Omega_{X^{an}}^{\bigcdot})
+\end{equation}
+
+Now let us assume $X$ is projective. Then by GAGA, we see that the $E_1$ page of this spectral sequence is isomorphic to the $E_1$ page of the hypercohomology spectral sequence for the algebraic de Rham complex,
+
+$$ E_1^{pq} = H^p(X,\Omega_{X}^q) \Rightarrow \mathbb{H}^{p+q}(X,\Omega_{X}^{\bigcdot}) $$
+
+therefore $\mathbb{H}^i(X^{an},\Omega_{X^{an}}^{\bigcdot}) \cong \mathbb{H}^i(X,\Omega_{X}^{\bigcdot})$.
+
+
+Combining all of these, we obtain
+
+\begin{theorem}
+    Let $X$ be a smooth projective variety. Then,
+
+    $$ H^i(X^{an},\C) = \mathbb{H}^i(X,\Omega_{X}^{\bigcdot}) $$
+\end{theorem}
+
+\begin{proof}
+    We have the following chain of isomorphisms,
+
+    $$ H^i(X^{an},\C) \cong H^i(X^{an},\underline{\C}) \cong \mathbb{H}^i(X^{an}, \Omega_{X^{an}}^{\bigcdot}) \cong \mathbb{H}^i(X, \Omega_{X}^{\bigcdot}) $$
+\end{proof}
+
+This shows that singular cohomology (which is purely topological) can be computed purely algebraically. 
+
+In the proof, we saw that the $E_1$ pages of the algebraic and analytic cases were the same. It turns out this common spectral sequence degenerates on the $E_1$ page, which proves the following.
+
+\begin{theorem}[Hodge Decomposition] \label{Hodge}
+    The spectral sequences from the above discussion degenerate on the $E_1$ page, which implies,
+
+    $$ H^i(X^{an},\C) = \bigoplus_{p+q = i} H^p(X^{an},\Omega_{X^{an}}^q) = \bigoplus_{p+q = i} H^p(X,\Omega_{X}^q) $$
+\end{theorem}
+
+A fully algebraic proof is given \href{https://people.math.harvard.edu/~zyao/seminar/seminar/MHM/Hodge_Theory.pdf}{here}. The proof is by reduction to characteristic $p$. What is tricky is that degeneration does not always hold in characteristic $p$, but it holds in a special case which is sufficient for the reduction.
+
+\section{Applications}
+
+\subsection{(Co)homology of a smooth affine variety}
+
+A complex manifold of dimension $n$ has dimension $2n$ as a real manifold, thus the singular cohomology groups can go up until the $2n^{th}$ spot. For example, if $X$ is a smooth projective variety then Theorem \ref{Hodge} tells us that
+
+$$ H^{2n}(X^{an},\C) = H^n(X,\Omega_X^n) = H^0(X,\OO_X) = \C $$
+
+by Serre duality. In this section we show that a smooth \textit{affine} variety has half the cohomology (and homology) that you would expect, i.e. it vanishes after the $n^{th}$ spot.
+
+\begin{theorem} \label{cohom}
+    Let $X$ be a smooth affine variety. Then
+    $$ H^i(X^{an},\C) = 0 $$
+    for $i > n$.
+\end{theorem}
+
+\begin{proof}
+    Recall the spectral sequence \ref{specseq} from Section \ref{alg},
+
+    $$ E_1^{pq} = H^p(X^{an},\Omega_{X^{an}}^q) \Rightarrow H^{p+q}(X^{an},\C) $$
+
+    By Proposition \ref{stein}, $H^p(X^{an},\Omega_{X^{an}}^q) = 0$ for $p > 0$, thus the $E_1$ page of this sequence is just the complex $H^0(X^{an},\Omega_{X^{an}}^{\bigcdot})$. This means that $H^i(X^{an},\C)$ is just the cohomology of $H^0(X^{an},\Omega_{X^{an}}^{\bigcdot})$ in the $i^{th}$ spot (just like de Rham cohomology for real manifolds!). Since $\Omega_{X^{an}}^q = 0$ for $q > n$, we are done.
+\end{proof}
+
+Now we show that this implies the analogous result for homology.
+
+\begin{theorem} \label{hom}
+    Let $X$ be a smooth affine variety. Then
+    $$ H_i(X^{an},\C) = 0 $$
+    for $i > n$.
+\end{theorem}
+\begin{proof}
+    This follows easily from the Universal Coefficient Theorem and Theorem \ref{cohom} as soon as we know that all the $H_i(X^{an},\Z)$ are finitely generated. This will be true for any variety but because I cannot find a good reference (if you have one let me know) I give an ad hoc proof here. 
+    First, embed $X$ as an open subset of a smooth proper variety $Y$ and let $Z = Y \setminus X$. Since $Y^{an}$ is a compact manifold, it has finitely generated homology and since $\dim Z < \dim X$ we can assume by induction that $Z^{an}$ has finitely generated homology. Thus the long exact sequence,
+
+    $$ \dots \rightarrow H_{i}(Y^{an},\Z) \rightarrow H_i(X^{an},\Z) \rightarrow H_{i-1}(Z^{an},\Z) \rightarrow \dots $$
+
+    proves that $X^{an}$ has finitely generated homology.
+    
+\end{proof}
+
+\subsection{Lefschetz Hyperplane Theorem}
+
+\begin{theorem}[Lefschetz Hyperplane Theorem]
+    Let $X$ be a smooth projective variety of dimension $n$ and $H$ an effective ample divisor. Then the natural restriction map
+    $$ H^i(X^{an},\C) \rightarrow H^i(H^{an},\C) $$
+    is an isomorphism for $i \leq n-2$ and injective when $i = n-1$.
+\end{theorem}
+
+\begin{proof}
+    We have a long exact sequence for singular cohomology,
+
+    $$ \dots \rightarrow H^i(X^{an},H^{an},\C) \rightarrow H^i(X^{an},\C) \rightarrow H^i(H^{an},\C) \rightarrow H^{i+1}(X^{an},H^{an},\C) \rightarrow \dots $$
+
+    thus it suffices to prove the relative cohomology group $H^i(X^{an},H^{an},\C)$ is zero for $i < n$. Let $U = X \setminus H$. Since $H$ is ample, $U$ is affine (note that this is the only place we use ampleness in our proof). Since $X^{an}$ is a compactification of $U^{an}$, we have
+
+    $$ H^i(X^{an},H^{an},\C) = H^i_c(U^{an},\C) $$
+    where $H^i_c$ denotes cohomology with compact supports. Now, by Poincaré duality,
+
+    $$ H^i_c(U^{an},\C) \cong H_{2n-i}(U^{an},\C) $$
+
+    and $H_{2n-i}(U^{an},\C) = 0$ for $i < n$ by Theorem \ref{hom}, proving the theorem.
+    
+\end{proof}
+
+\subsection{Kodaira Vanishing Theorem}
+
+The Kodaira Vanishing Theorem is one of the most important theorems in birational geometry and it is the basis for other important theorems like Kawamata–Viehweg Vanishing, Grauert–Riemenschneider Vanishing and Nadel Vanishing. The later three can all be deduced from Kodaira Vanishing using algebraic methods but Kodaira Vanishing is most easily proved using Theorem \ref{Hodge} and the Lefschetz Hyperplane Theorem.
+
+First we will prove an algebraic version of the Lefschetz Hyperplane Theorem.
+
+\begin{lemma} \label{alg_lef}
+    Let $X$ be a smooth projective variety of dimension $n$ and $H$ a smooth ample divisor. Then the natural restriction map
+    $$ H^i(X,\OO_X) \rightarrow H^i(H,\OO_H) $$
+    is an isomorphism  for $i \leq n-2$ and injective when $i = n-1$.
+\end{lemma}
+
+\begin{proof}
+    Applying Theorem \ref{Hodge} to both $X$ and $H$, the natural restriction map $H^i(X,\OO_X) \rightarrow H^i(H,\OO_H)$ turns into a map
+
+    $$ \bigoplus_{p+q=i} H^p(X,\Omega_X^q) \rightarrow \bigoplus_{p+q=i} H^p(H,\Omega_H^q) $$
+
+    This map is just the direct sum of the natural restriction maps, $H^p(X,\Omega_X^q) \rightarrow H^p(H,\Omega_H^q)$ (one should check this more carefully but cmooooooon). Thus the Lefschetz Hyperplane Theorem implies that $H^p(X,\Omega_X^q) \rightarrow H^p(H,\Omega_H^q)$ is an isomorphism for $p+q \leq n-2$ and injective for $p+q = n-1$, in particular the $p = 0$ case is our lemma.
+    
+\end{proof}
+
+We first prove the Kodaira vanishing theorem in the case that the divisor is smooth. This is the heart of the argument, the reduction to this case is just algebra tricks.
+
+\begin{lemma} \label{kodlem}
+    Let $X$ be a smooth projective variety and $H$ a smooth ample divisor. Then 
+
+    $$ H^i(X,\OO(-H)) = 0 $$
+
+    for $i < n$.
+\end{lemma}
+
+\begin{proof}
+    We start with the short exact sequence 
+    $$ 0 \rightarrow \OO_X(-H) \rightarrow \OO_X \rightarrow \OO_H \rightarrow 0 $$
+
+    and obtain the long exact sequence,
+
+    $$ \dots \rightarrow H^i(X,\OO_X(-H)) \rightarrow H^i(X,\OO_X) \rightarrow H^i(H,\OO_H) \rightarrow H^{i+1}(X,\OO_X(-H)) \rightarrow \dots $$
+
+    The middle map is an isomorphism for $i \leq n-2$ and injective for $i = n-1$ by Lemma \ref{alg_lef}, proving our lemma.
+    
+\end{proof}
+
+\begin{theorem}[Kodaira Vanishing Theorem]
+    Let $X$ be a smooth projective variety and $A$ an ample divisor. Then
+
+    $$ H^i(X,\OO(-A)) = 0 $$
+    for $i < n$. Equivalently, by Serre duality, 
+
+    $$ H^i(X,\OO(K_X + A)) = 0 $$
+    for $i > 0$ where $K_X$ is a canonical divisor.
+\end{theorem}
+\begin{proof}
+    Let $H$ be a smooth divisor linearly equivalent to $kA$ for some large $k > 0$. Such an $H$ exists by Bertini's theorem and the fact that $kA$ is very ample for $k >> 0$. 
+
+    Let $\pi: Y \rightarrow X$ be the $k$-fold cyclic cover branched along $H$. If you have not seen cyclic covers before, we really only need the following properties:
+    
+\begin{enumerate}
+    \item $\pi$ is a finite surjective map.
+    \item $Y$ is smooth.
+    \item There exists a smooth divisor $D \subseteq Y$ such that $D \sim \pi^* A$.
+\end{enumerate}
+
+    Since $\OO(D)$ is the pullback of an ample line bundle under a finite map, $D$ is ample. Thus Lemma \ref{kodlem} implies that $H^i(Y,\OO(-D)) = 0$ for $i < n$.
+
+    Now let $\LL = \OO(-A)$. We have shown that $H^i(Y,\pi^*\LL) = 0$ for $i < n$ and we would like to show that $H^i(X,\LL) = 0$ for $i < n$. 
+
+    Because $\pi$ is finite, surjective and $X$ and is normal, the map $\OO_X \rightarrow \pi_* \OO_Y$ splits (see \href{https://math.stackexchange.com/q/3402161}{here}). Therefore, the map obtained by tensoring with $\LL$,
+    
+    $$\LL \rightarrow \pi_* \OO_Y \otimes \LL $$
+    
+    also splits. By the projection formula, $\pi_* \OO_Y \otimes \LL = \pi_* \pi^* \LL$. Applying $H^i$ to the split map $\LL \rightarrow \pi_* \pi^* \LL$ and using the fact that $\pi$ is finite gives an injection
+
+    $$ H^i(X,\LL) \rightarrow H^i(X,\pi_*\pi^* \LL) = H^i(Y,\pi^* \LL) $$
+
+    thus $H^i(X,\LL) = 0$ for $i < n$.
+    
+\end{proof}
+
+In a roundabout way, the Kodaira Vanishing theorem also gives us a stronger version of Lemma \ref{alg_lef}.
+
+\begin{corollary} \label{ressurj}
+    Let $X$ be a smooth projective variety and $H$ an effective ample divisor. Then the natural restriction map
+    $$ H^i(X,\OO_X) \rightarrow H^i(H,\OO_H) $$
+    is an isomorphism  for $i \leq n-2$ and injective when $i = n-1$.
+\end{corollary}
+
+\begin{proof}
+    Use the long exact sequence as in Lemma \ref{kodlem}.
+\end{proof}
+
+\subsection{A theorem on Picard groups}
+
+Finally, we prove an application to Picard groups. For this theorem, we will need the Lefschetz Hyperplane Theorem for $\Z$ coefficients \cite{MR2095471}[3.1.17].
+
+\begin{theorem}
+    Let $X$ be a smooth projective variety of dimension $\geq 4$ and $D \subseteq X$ a reduced effective ample divisor. Then the pullback map
+
+    $$ Pic(X) \rightarrow Pic(H) $$
+
+    is an isomorphism.
+\end{theorem}
+
+\begin{proof}
+We have the following commutative diagram obtained from the exponential sequences for $X$ and $H$,
+
+\begin{center}
+\begin{tikzcd}
+0 \arrow[r] & \underline{\mathbb{Z}}_X \arrow[r] \arrow[d] & \mathcal{O}_X \arrow[r] \arrow[d] & \mathcal{O}_X^* \arrow[r] \arrow[d] & 0 \\
+0 \arrow[r] & \underline{\mathbb{Z}}_H \arrow[r]           & \mathcal{O}_H \arrow[r]           & \mathcal{O}_H^* \arrow[r]           & 0
+\end{tikzcd}
+\end{center}
+
+Taking cohomology, we obtain,
+\begin{center}
+\begin{tikzcd}
+{H^1(X,\mathbb{Z})} \arrow[r] \arrow[d] & {H^1(X,\mathcal{O}_X)} \arrow[r] \arrow[d] & {H^1(X,\mathcal{O}_X^*)} \arrow[r] \arrow[d] & {H^2(X,\mathbb{Z})} \arrow[d] \arrow[r] & {H^2(X,\mathcal{O}_X)} \arrow[d] \\
+{H^1(H,\mathbb{Z})} \arrow[r]           & {H^1(X,\mathcal{O}_H)} \arrow[r]           & {H^1(X,\mathcal{O}_H^*)} \arrow[r]                     & {H^2(H,\mathbb{Z})} \arrow[r]           & {H^2(X,\mathcal{O}_H)}
+\end{tikzcd}
+\end{center}
+
+Since $\dim X \geq 4$, the Lefschetz Hyperplane theorem and Corollary \ref{ressurj} imply that all the vertical maps except the middle one are isomorphisms. Now the five lemma tells us the middle map is an isomorphism and we are done since $H^1(X,\OO_X^*) \cong Pic(X)$.
+\end{proof}
+
+This theorem has a number of immediate consequences, for example, any hypersurface in $\PP^n$ for $n \geq 4$ has Picard group equal to $\Z$, where the generator is the pullback of $\OO(1)$. In fact, by induction, the same is true for any complete intersection of dimension $\geq 4$ in $\PP^n$.
+
+
+
+\bibliographystyle{alpha} % We choose the "plain" reference style
+\bibliography{Ref}
+
+
+
+\end{document}
